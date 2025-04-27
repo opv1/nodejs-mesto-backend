@@ -1,0 +1,19 @@
+meta {
+  name: updateUser
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{path}}/users/me
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Ivan",
+    "about": "new desc",
+    "avatar": "http://photourl"
+  }
+}
