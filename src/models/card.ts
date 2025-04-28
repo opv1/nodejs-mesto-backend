@@ -31,7 +31,7 @@ const cardSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: new Date(),
+      default: Date.now,
     },
   },
   { versionKey: false, timestamps: true },
