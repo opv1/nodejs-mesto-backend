@@ -54,11 +54,11 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { user } = res.locals;
-    const { name, about, avatar } = req.body;
+    const { name, about } = req.body;
 
     const updatedUser = await User.findByIdAndUpdate(
       user._id,
-      { name, about, avatar },
+      { name, about },
       {
         new: true,
         runValidators: true,

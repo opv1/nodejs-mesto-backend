@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { NextFunction, Response, Request } from 'express';
 import mongoose from 'mongoose';
 import router from './routes';

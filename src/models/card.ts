@@ -3,8 +3,8 @@ import { Document, Schema, model } from 'mongoose';
 interface ICard extends Document {
   name: string;
   link: string;
-  owner: string;
-  likes: string[];
+  owner: Schema.Types.ObjectId;
+  likes: Schema.Types.ObjectId[];
   createdAt: string;
 }
 
