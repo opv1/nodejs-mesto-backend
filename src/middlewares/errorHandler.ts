@@ -1,13 +1,13 @@
 import { ErrorRequestHandler } from 'express';
-import { constants } from 'http2';
+import InternalServerError from '../errors/internalServerError';
+
+const internalServerError = new InternalServerError('На сервере произошла ошибка');
 
 const errorHandler: ErrorRequestHandler = (err, _req, res) => {
-  const statusCode = err.statusCode || constants.HTTP_STATUS_INTERNAL_SERVER_ERROR;
+  const statusCode = err.statusCode || internalServerError.statusCode;
 
   const message =
-    statusCode !== constants.HTTP_STATUS_INTERNAL_SERVER_ERROR
-      ? err.message
-      : 'На сервере произошла ошибка';
+    statusCode === internalServerError.statusCode ? internalServerError.message : err.message;
 
   res.status(statusCode).send({ message, status: statusCode });
 };

@@ -61,7 +61,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
     const { email, password, name, about, avatar } = req.body;
 
     if (!validator.isEmail(email)) {
-      throw new UnauthorizedError('Неправильные почта или пароль');
+      next(new UnauthorizedError('Некорректный email'));
     }
 
     const hash = await bcrypt.hash(password, 10);
@@ -143,13 +143,15 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      throw new UnauthorizedError('Неправильные почта или пароль');
+      next(new UnauthorizedError('Неправильные почта или пароль'));
+      return;
     }
 
     const matched = await bcrypt.compare(password, user.password);
 
     if (!matched) {
-      throw new UnauthorizedError('Неправильные почта или пароль');
+      next(new UnauthorizedError('Неправильные почта или пароль'));
+      return;
     }
 
     const token = jwt.sign(
@@ -167,7 +169,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         maxAge: 3600000,
         httpOnly: true,
       })
-      .end();
+      .send({ message: 'Успешный вход' });
   } catch (error) {
     next(error);
   }

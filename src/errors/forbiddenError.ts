@@ -1,5 +1,6 @@
 import { constants } from 'http2';
 
+// 403
 class ForbiddenError extends Error {
   public statusCode: number;
 

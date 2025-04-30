@@ -1,5 +1,6 @@
 import { constants } from 'http2';
 
+// 400
 class BadRequestError extends Error {
   public statusCode: number;
 

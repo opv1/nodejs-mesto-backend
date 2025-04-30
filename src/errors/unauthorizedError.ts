@@ -1,5 +1,6 @@
 import { constants } from 'http2';
 
+// 401
 class UnauthorizedError extends Error {
   public statusCode: number;
 

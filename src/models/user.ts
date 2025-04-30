@@ -1,4 +1,5 @@
 import { Document, Schema, model } from 'mongoose';
+import validator from 'validator';
 
 interface IUser extends Document {
   email: string;
@@ -35,6 +36,9 @@ const userSchema = new Schema(
     avatar: {
       type: String,
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+      validate: {
+        validator: (value: string) => validator.isURL(value),
+      },
     },
   },
   { versionKey: false, timestamps: true },
