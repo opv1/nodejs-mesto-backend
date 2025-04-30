@@ -26,7 +26,6 @@ export const createCard = async (req: Request, res: Response, next: NextFunction
   } catch (error) {
     if (error instanceof MongooseError.ValidationError) {
       next(new BadRequestError('Некорректные данные при создании карточки'));
-      return;
     }
 
     next(error);
@@ -35,17 +34,18 @@ export const createCard = async (req: Request, res: Response, next: NextFunction
 
 export const deleteCard = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const { user } = res.locals;
     const { cardId } = req.params;
 
-    const deletedCard = await Card.findByIdAndDelete(cardId).orFail(
-      () => new NotFoundError('Неудалось удалить карточку'),
-    );
+    const deletedCard = await Card.findOneAndDelete({
+      _id: cardId,
+      owner: user._id,
+    }).orFail(() => new NotFoundError('Неудалось удалить карточку'));
 
     res.send(deletedCard);
   } catch (error) {
     if (error instanceof MongooseError.CastError) {
       next(new BadRequestError('Некорректный id'));
-      return;
     }
 
     next(error);
@@ -67,7 +67,6 @@ export const updateCardLike = async (req: Request, res: Response, next: NextFunc
   } catch (error) {
     if (error instanceof MongooseError.CastError) {
       next(new BadRequestError('Некорректный id'));
-      return;
     }
 
     next(error);
@@ -89,7 +88,6 @@ export const deleteCardLike = async (req: Request, res: Response, next: NextFunc
   } catch (error) {
     if (error instanceof MongooseError.CastError) {
       next(new BadRequestError('Некорректный id'));
-      return;
     }
 
     next(error);

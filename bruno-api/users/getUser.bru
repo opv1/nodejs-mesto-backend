@@ -1,0 +1,15 @@
+meta {
+  name: getUser
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{path}}/users/me
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEyNmIyMGQxNzA0MjQzNTdjZjgxNDciLCJpYXQiOjE3NDYwMzgxNTIsImV4cCI6MTc0NjY0Mjk1Mn0.W1SvIfO8kD3cthUd4JWmg_MicRrPl2j_nYaX996odLM
+}

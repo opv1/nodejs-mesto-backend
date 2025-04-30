@@ -7,12 +7,16 @@ meta {
 patch {
   url: {{path}}/users/me
   body: json
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODEyNzE4Nzg5NDQ0Yzk0YTVkNzQwOTMiLCJpYXQiOjE3NDYwNDE0OTIsImV4cCI6MTc0NjY0NjI5Mn0.tEMHnHa3tl1aMwXA8dOGX3mV7vCunhMvpm5zZQs4V-Y
 }
 
 body:json {
   {
-    "name": "Ivan",
+    "name": "dev",
     "about": "new desc new"
   }
 }
