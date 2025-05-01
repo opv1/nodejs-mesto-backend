@@ -4,6 +4,7 @@ import { Error as MongooseError } from 'mongoose';
 import Card from '../models/card';
 import BadRequestError from '../errors/badRequestError';
 import NotFoundError from '../errors/notFoundError';
+import ForbiddenError from '../errors/forbiddenError';
 
 export const getAllCards = async (_req: Request, res: Response, next: NextFunction) => {
   try {
@@ -37,10 +38,17 @@ export const deleteCard = async (req: Request, res: Response, next: NextFunction
     const { user } = res.locals;
     const { cardId } = req.params;
 
-    const deletedCard = await Card.findOneAndDelete({
-      _id: cardId,
-      owner: user._id,
-    }).orFail(() => new NotFoundError('Неудалось удалить карточку'));
+    const card = await Card.findById(cardId).orFail(
+      () => new NotFoundError('Неудалось удалить карточку'),
+    );
+
+    if (card.owner.toString() !== user._id) {
+      throw new ForbiddenError('Нельзя удалить чужую карточку');
+    }
+
+    const deletedCard = await Card.findByIdAndDelete(cardId).orFail(
+      () => new NotFoundError('Неудалось удалить карточку'),
+    );
 
     res.send(deletedCard);
   } catch (error) {

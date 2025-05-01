@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Joi, Segments } from 'celebrate';
 import {
   createCard,
   deleteCard,
@@ -11,12 +12,45 @@ const cardsRouter = Router();
 
 cardsRouter.get('/', getAllCards);
 
-cardsRouter.post('/', createCard);
+cardsRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      name: Joi.string().required(),
+      link: Joi.string().required(),
+    }),
+  }),
+  createCard,
+);
 
-cardsRouter.delete('/:cardId', deleteCard);
+cardsRouter.delete(
+  '/:cardId',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      cardId: Joi.string().required(),
+    }),
+  }),
+  deleteCard,
+);
 
-cardsRouter.put('/:cardId/likes', updateCardLike);
+cardsRouter.put(
+  '/:cardId/likes',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      cardId: Joi.string().required(),
+    }),
+  }),
+  updateCardLike,
+);
 
-cardsRouter.delete('/:cardId/likes', deleteCardLike);
+cardsRouter.delete(
+  '/:cardId/likes',
+  celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      cardId: Joi.string().required(),
+    }),
+  }),
+  deleteCardLike,
+);
 
 export default cardsRouter;
