@@ -27,7 +27,7 @@ cardsRouter.delete(
   '/:cardId',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      cardId: Joi.string().required(),
+      cardId: Joi.string().length(24).hex().required(),
     }),
   }),
   deleteCard,
@@ -37,7 +37,7 @@ cardsRouter.put(
   '/:cardId/likes',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      cardId: Joi.string().required(),
+      cardId: Joi.string().length(24).hex().required(),
     }),
   }),
   updateCardLike,
@@ -47,7 +47,7 @@ cardsRouter.delete(
   '/:cardId/likes',
   celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      cardId: Joi.string().required(),
+      cardId: Joi.string().length(24).hex().required(),
     }),
   }),
   deleteCardLike,
