@@ -15,13 +15,9 @@ import {
 const usersRouter = Router();
 
 usersRouter.get('/', getAllUsers);
-
 usersRouter.get('/me', getUser);
-
 usersRouter.get('/:userId', validateGetUserById, getUserById);
-
 usersRouter.patch('/me', validateUpdateUser, updateUser);
-
 usersRouter.patch('/me/avatar', validateUpdateUserAvatar, updateUserAvatar);
 
 export default usersRouter;

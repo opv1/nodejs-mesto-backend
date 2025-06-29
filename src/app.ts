@@ -18,7 +18,6 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.post('/signin', validateSignin, login);
-
 app.post('/signup', validateSignup, createUser);
 
 app.use(authHandler);

@@ -96,10 +96,7 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
     const updatedUser = await User.findOneAndUpdate(
       { _id: user._id },
       { name, about },
-      {
-        new: true,
-        runValidators: true,
-      },
+      { new: true, runValidators: true },
     ).orFail(() => new NotFoundError('Неудалось обновить пользователя'));
 
     res.send(updatedUser);
@@ -120,10 +117,7 @@ export const updateUserAvatar = async (req: Request, res: Response, next: NextFu
     const updatedUser = await User.findOneAndUpdate(
       { _id: user._id },
       { avatar },
-      {
-        new: true,
-        runValidators: true,
-      },
+      { new: true, runValidators: true },
     ).orFail(() => new NotFoundError('Неудалось обновить аватар пользователя'));
 
     res.send(updatedUser);
@@ -154,15 +148,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       return;
     }
 
-    const token = jwt.sign(
-      {
-        _id: user._id,
-      },
-      JSON.stringify(process.env.JWT_SECRET),
-      {
-        expiresIn: '7d',
-      },
-    );
+    const token = jwt.sign({ _id: user._id }, JSON.stringify(process.env.JWT_SECRET), {
+      expiresIn: '7d',
+    });
 
     res
       .cookie('jwt', token, {
