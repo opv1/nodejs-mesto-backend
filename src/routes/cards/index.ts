@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { celebrate, Joi, Segments } from 'celebrate';
 import {
   createCard,
   deleteCard,
@@ -7,50 +6,23 @@ import {
   getAllCards,
   updateCardLike,
 } from '../../controllers/cards';
+import {
+  validateCreateCard,
+  validateDeleteCard,
+  validateDeleteCardLike,
+  validateUpdateCardLike,
+} from '../../middlewares/validators/card';
 
 const cardsRouter = Router();
 
 cardsRouter.get('/', getAllCards);
 
-cardsRouter.post(
-  '/',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string().required(),
-      link: Joi.string().required(),
-    }),
-  }),
-  createCard,
-);
+cardsRouter.post('/', validateCreateCard, createCard);
 
-cardsRouter.delete(
-  '/:cardId',
-  celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      cardId: Joi.string().length(24).hex().required(),
-    }),
-  }),
-  deleteCard,
-);
+cardsRouter.delete('/:cardId', validateDeleteCard, deleteCard);
 
-cardsRouter.put(
-  '/:cardId/likes',
-  celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      cardId: Joi.string().length(24).hex().required(),
-    }),
-  }),
-  updateCardLike,
-);
+cardsRouter.put('/:cardId/likes', validateUpdateCardLike, updateCardLike);
 
-cardsRouter.delete(
-  '/:cardId/likes',
-  celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      cardId: Joi.string().length(24).hex().required(),
-    }),
-  }),
-  deleteCardLike,
-);
+cardsRouter.delete('/:cardId/likes', validateDeleteCardLike, deleteCardLike);
 
 export default cardsRouter;

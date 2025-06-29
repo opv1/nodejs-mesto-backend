@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import { celebrate, Joi, Segments } from 'celebrate';
 import {
   getAllUsers,
   getUser,
@@ -7,6 +6,11 @@ import {
   updateUser,
   updateUserAvatar,
 } from '../../controllers/users';
+import {
+  validateGetUserById,
+  validateUpdateUser,
+  validateUpdateUserAvatar,
+} from '../../middlewares/validators/user';
 
 const usersRouter = Router();
 
@@ -14,35 +18,10 @@ usersRouter.get('/', getAllUsers);
 
 usersRouter.get('/me', getUser);
 
-usersRouter.get(
-  '/:userId',
-  celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      userId: Joi.string().length(24).hex().required(),
-    }),
-  }),
-  getUserById,
-);
+usersRouter.get('/:userId', validateGetUserById, getUserById);
 
-usersRouter.patch(
-  '/me',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      name: Joi.string(),
-      about: Joi.string(),
-    }),
-  }),
-  updateUser,
-);
+usersRouter.patch('/me', validateUpdateUser, updateUser);
 
-usersRouter.patch(
-  '/me/avatar',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      avatar: Joi.string(),
-    }),
-  }),
-  updateUserAvatar,
-);
+usersRouter.patch('/me/avatar', validateUpdateUserAvatar, updateUserAvatar);
 
 export default usersRouter;

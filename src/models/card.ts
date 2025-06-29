@@ -30,7 +30,7 @@ const cardSchema = new Schema(
       required: true,
     },
     likes: {
-      type: [String],
+      type: [{ type: Schema.Types.ObjectId, ref: 'user' }],
       default: [],
     },
     createdAt: {
